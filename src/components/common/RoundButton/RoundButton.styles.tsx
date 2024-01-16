@@ -1,15 +1,18 @@
 import styled from "styled-components";
+import { glassBackground } from "../../../styles/commonStyles";
 
 export const RoundButton = styled.button<{ $isActive: boolean }>`
-  border: 2px solid black;
+  ${glassBackground}
+
   border-radius: 50%;
   width: 50px;
   height: 50px;
   font-size: 25px;
-  background: ${(props) =>
-    props.$isActive ? "rgb(173, 173, 173)" : "transparent"};
+  font-family: "Lato";
+  font-weight: 300;
+  background: ${(props) => props.$isActive && " rgba(255, 255, 255, 0.60);"};
 
   &:hover {
-    background-color: rgb(173, 173, 173, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
   }
 `;
