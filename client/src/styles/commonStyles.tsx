@@ -12,6 +12,7 @@ export const glassBackground = css`
 export const Wrapper = styled.div`
   margin: 4rem;
   display: flex;
+  justify-content: center;
   height: 100%;
 `;
 

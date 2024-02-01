@@ -1,22 +1,20 @@
 import { click } from "@testing-library/user-event/dist/click";
-import React, { Dispatch } from "react";
+import React, { Dispatch, FC } from "react";
 import { useState } from "react";
 import { RoundButton } from "../common/RoundButton/RoundButton.styles";
+import { SubmitButton } from "../common/SubmitButton.styles";
 import { TableData } from "../Table/TableData.interface";
-import {
-  ClickedPins,
-  Grid,
-  Numbers,
-  SubmitButton,
-  Wrapper,
-} from "./NumberBoard.style";
+import { ClickedPins, Grid, Numbers, Wrapper } from "./NumberBoard.style";
 
-export const NumberBoard = ({
-  setData,
-}: {
+type NumberBoardProps = {
+  data: TableData[];
   setData: React.Dispatch<React.SetStateAction<TableData[]>>;
-}) => {
+};
+
+export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
   const [clickedPins, setClickedPins] = useState<number[]>([]);
+  const [playerTurn, setPlayerTurn] = useState<number>(1);
+  const playersNumber = data.length;
 
   const handleOnClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -40,14 +38,15 @@ export const NumberBoard = ({
     const calculatedScore =
       clickedPins.length > 1 ? clickedPins.length : clickedPins[0];
 
-    setData((prev) => [
-      ...prev,
-      {
-        id: prev.length + 1,
-        tableData: clickedPins,
-        score: calculatedScore,
-      },
-    ]);
+    const modifiedData = [...data];
+    modifiedData[playerTurn - 1].knockedPins.push(clickedPins);
+    modifiedData[playerTurn - 1].score += calculatedScore;
+
+    setData(modifiedData);
+    setPlayerTurn((prevTurn) =>
+      prevTurn === playersNumber ? 1 : prevTurn + 1
+    );
+    setClickedPins([]);
   };
 
   const drawPinsSetup = () => {
