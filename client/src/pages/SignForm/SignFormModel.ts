@@ -1,4 +1,4 @@
-type InputType = {
+export type InputType = {
   name: string;
   label: string;
   type: string;
@@ -39,6 +39,14 @@ export const SignupForm: InputType[] = [
     type: "text",
     validationRules: {
       required: { value: true, message: "This field surname is required." },
+    },
+  },
+  {
+    name: "username",
+    label: "Username",
+    type: "text",
+    validationRules: {
+      required: { value: true, message: "This field username is required." },
     },
   },
   {
