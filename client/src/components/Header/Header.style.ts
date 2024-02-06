@@ -6,6 +6,8 @@ export const Wrapper = styled.div`
 
   height: 40px;
   margin: 5px 10px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const HeaderTitle = styled.h1`

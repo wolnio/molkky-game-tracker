@@ -1,8 +1,11 @@
+import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
+import { setCredentials } from "../../store/authStore/authSlice";
 import { FormInputType, FormType } from "./SignForm.interface";
 
 export const onLoginHandler = async (
   data: FormInputType,
-  formType: FormType
+  formType: FormType,
+  dispatch: Dispatch
 ) => {
   const signupBody = {
     firstName: data.firstName,
@@ -27,6 +30,7 @@ export const onLoginHandler = async (
     });
 
     const responseData = await response.json();
+    dispatch(setCredentials(responseData));
     console.log("responseData: ", responseData);
   } catch (err) {
     console.log("err", err);

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../../components/common/SubmitButton.styles";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   Container,
   FormContainer,
@@ -20,6 +21,8 @@ export const Login = () => {
     defaultValues: { email: "", password: "" },
   });
   const errors = formState.errors;
+
+  const dispatch = useAppDispatch();
 
   const [activeTab, setActiveTab] = useState(false);
   const [currentForm, setCurrentForm] = useState<InputType[]>(SigninForm);
@@ -49,7 +52,11 @@ export const Login = () => {
       </HeaderTabs>
       <FormContainer
         onSubmit={handleSubmit((data) =>
-          onLoginHandler(data, currentForm === SigninForm ? "signin" : "signup")
+          onLoginHandler(
+            data,
+            currentForm === SigninForm ? "signin" : "signup",
+            dispatch
+          )
         )}
       >
         {currentForm.map(({ name, label, type, validationRules }, index) => {
