@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../../components/common/SubmitButton.styles";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   Container,
   FormContainer,
@@ -13,7 +12,7 @@ import {
   Tab,
   ValidationMessage,
 } from "./SignForm.styles";
-import { onLoginHandler } from "./SignForm.utils";
+import { useSignFormHandler } from "./SignForm.utils";
 import { InputType, SigninForm, SignupForm } from "./SignFormModel";
 
 export const Login = () => {
@@ -22,10 +21,10 @@ export const Login = () => {
   });
   const errors = formState.errors;
 
-  const dispatch = useAppDispatch();
-
   const [activeTab, setActiveTab] = useState(false);
   const [currentForm, setCurrentForm] = useState<InputType[]>(SigninForm);
+
+  const signHandler = useSignFormHandler();
 
   const handleSwitchTabs = () => {
     setActiveTab((prevState) => !prevState);
@@ -52,11 +51,7 @@ export const Login = () => {
       </HeaderTabs>
       <FormContainer
         onSubmit={handleSubmit((data) =>
-          onLoginHandler(
-            data,
-            currentForm === SigninForm ? "signin" : "signup",
-            dispatch
-          )
+          signHandler(data, currentForm === SigninForm ? "signin" : "signup")
         )}
       >
         {currentForm.map(({ name, label, type, validationRules }, index) => {

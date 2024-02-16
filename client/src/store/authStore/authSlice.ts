@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
-  token: string;
+  token: string | null;
+  username: string | null;
 };
 
 const initialState: AuthState = {
   token: "",
+  username: "",
 };
 
 const authSlice = createSlice({
@@ -14,10 +16,10 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      { payload: { token } }: PayloadAction<{ token: string }>
+      { payload: { token, username } }: PayloadAction<AuthState>
     ) => {
-      console.log("inside", token);
       state.token = token;
+      state.username = username;
     },
   },
 });
