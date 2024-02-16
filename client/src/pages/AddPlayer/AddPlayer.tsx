@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { NewPlayerCard } from "../../components/NewPlayerCard/NewPlayerCard";
+import { useAppSelector } from "../../store/hooks";
 import { Wrapper } from "../../styles/commonStyles";
 import {
   AddNewPlayerButton,
@@ -14,7 +15,10 @@ export type Player = {
 };
 
 export const AddPlayer = () => {
-  const [players, setPlayers] = useState<Player[]>([]);
+  const { username } = useAppSelector((state) => state.auth);
+  const initialPlayerArr: Player[] = [{ id: 1, name: username!, color: "" }];
+
+  const [players, setPlayers] = useState<Player[]>(initialPlayerArr);
 
   const handleAddNewPlayer = () => {
     setPlayers &&
@@ -22,7 +26,6 @@ export const AddPlayer = () => {
         ...prev,
         { id: prev.length + 1, name: "", color: "" },
       ]);
-    console.log("all", players);
   };
 
   const handleDeletePlayer = (player: Player) => {

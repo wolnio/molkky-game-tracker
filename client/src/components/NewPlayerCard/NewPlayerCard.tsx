@@ -27,9 +27,12 @@ export const NewPlayerCard: FC<NewPlayerCardProps> = ({
         placeholder="Name"
         onChange={(e: ChangeEvent<HTMLInputElement>) => onInputChange(e, data)}
         value={data.name}
+        readOnly={index === 1}
       />
       <ColorPicker pickedColor={pickedColor} setPickedColor={setPickedColor} />
-      <TempButton onClick={() => onDeleteItem(data)}>Delete</TempButton>
+      {!(index === 1) && (
+        <TempButton onClick={() => onDeleteItem(data)}>Delete</TempButton>
+      )}
     </Container>
   );
 };

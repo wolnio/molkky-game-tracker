@@ -5,9 +5,7 @@ import { HeaderTitle, Wrapper } from "./Header.style";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth);
-  const { token, username } = user;
-  console.log("header token: ", token);
+  const { username } = useAppSelector((state) => state.auth);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -23,7 +21,7 @@ export const Header = () => {
   return (
     <Wrapper>
       <HeaderTitle>Molkky</HeaderTitle>
-      {token && (
+      {username && (
         <>
           <button onClick={handleLogout}>Log out</button>
           <Link to={"/auth/dashboard"}>Dashboard</Link>
