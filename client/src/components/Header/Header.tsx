@@ -27,6 +27,7 @@ export const Header = () => {
           <Link to={"/auth/dashboard"}>Dashboard</Link>
           <Link to={"/auth/board"}>Board</Link>
           <Link to={"/auth/addPlayer"}>Add player</Link>
+          <Link to={"/auth/gameplays"}>Gameplays</Link>
         </>
       )}
       <p>Logged: {!!username ? username : "NOT"}</p>

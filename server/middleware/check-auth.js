@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     if (!token) {
       throw new Error("Authentication failed!");
     }
-
+    console.log("AUTH MIDDLEWARE");
     const decodedToken = jwt.verify(token, "secretAndPrivateString");
     req.userData = { userId: decodedToken.userId };
     next();

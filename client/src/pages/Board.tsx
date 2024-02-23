@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NumberBoard } from "../components/NumberBoard/NumberBoard";
 import { Table } from "../components/Table/Table";
 import { TableData } from "../components/Table/TableData.interface";
-import { MainContainer, TableContainer, Wrapper } from "../styles/commonStyles";
+import { TableContainer, Wrapper } from "../styles/commonStyles";
 
 export const Board = () => {
   const initialData: TableData[] = [

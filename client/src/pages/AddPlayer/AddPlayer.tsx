@@ -15,7 +15,7 @@ export type Player = {
 };
 
 export const AddPlayer = () => {
-  const { username } = useAppSelector((state) => state.auth);
+  const { username, token } = useAppSelector((state) => state.auth);
   const initialPlayerArr: Player[] = [{ id: 1, name: username!, color: "" }];
 
   const [players, setPlayers] = useState<Player[]>(initialPlayerArr);
@@ -42,6 +42,28 @@ export const AddPlayer = () => {
     setPlayers(updatedPlayer);
   };
 
+  const handleCreateGame = async () => {
+    const playersNames = players.map((player) => ({
+      username: player.name,
+    }));
+    //console.log("create game: ", "players:" + JSON.stringify(playersNames));
+
+    const response = await fetch("http://localhost:8080/gameplay/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ players: playersNames }),
+    });
+
+    const responseData = await response.json();
+
+    if (response.ok) {
+      console.log("RESPONSE", responseData);
+    }
+  };
+
   return (
     <Wrapper>
       <Container>
@@ -61,6 +83,7 @@ export const AddPlayer = () => {
             ADD NEW
           </AddNewPlayerButton>
         )}
+        <button onClick={handleCreateGame}>Create game</button>
       </Container>
     </Wrapper>
   );

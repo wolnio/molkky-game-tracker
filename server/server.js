@@ -5,6 +5,9 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@clu
 const express = require("express");
 const cors = require("cors");
 const usersRouter = require("./routes/users-routes");
+const gameplayRouter = require("./routes/gameplay-routes");
+
+const checkAuth = require("./middleware/check-auth");
 
 const mongoose = require("mongoose");
 
@@ -23,6 +26,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", usersRouter);
+
+app.use(checkAuth);
+
+app.use("/gameplay", gameplayRouter);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
