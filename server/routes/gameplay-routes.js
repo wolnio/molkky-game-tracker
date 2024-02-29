@@ -8,4 +8,6 @@ router.post("/new", gameplayController.newGameplay);
 
 router.get("/all", gameplayController.getAllGameplays);
 
+router.get("/:id", gameplayController.getGameplayById);
+
 module.exports = router;

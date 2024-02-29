@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 
 const gameplay = new Schema({
-  creator: String,
+  title: String,
+  creator: Schema.ObjectId,
   players: [
     {
       username: String,

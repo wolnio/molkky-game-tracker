@@ -14,7 +14,7 @@ const mongoose = require("mongoose");
 const app = express();
 
 var corsOptions = {
-  origin: "*",
+	origin: "*",
 };
 
 app.use(cors(corsOptions));
@@ -35,11 +35,11 @@ app.use("/gameplay", gameplayRouter);
 const PORT = process.env.PORT || 8080;
 
 mongoose
-  .connect(uri)
-  .then((client) => {
-    console.log("Connected!");
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}.`);
-    });
-  })
-  .catch((err) => console.log(err));
+	.connect(uri)
+	.then((client) => {
+		console.log("Connected!");
+		app.listen(PORT, () => {
+			console.log(`Server is running on port ${PORT}.`);
+		});
+	})
+	.catch((err) => console.log(err));

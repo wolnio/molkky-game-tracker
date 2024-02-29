@@ -1,5 +1,5 @@
 export type TableData = {
-  name: String;
-  knockedPins: number[][];
-  score: number;
+	username: String;
+	points: number[][];
+	score: number;
 };
