@@ -6,7 +6,7 @@ const gameplay = new Schema({
   players: [
     {
       username: String,
-      points: { type: [Number], default: null },
+      points: { type: [[Number]], default: null },
       score: { type: Number, default: null },
     },
   ],

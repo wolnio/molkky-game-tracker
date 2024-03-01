@@ -9,5 +9,6 @@ router.post("/new", gameplayController.newGameplay);
 router.get("/all", gameplayController.getAllGameplays);
 
 router.get("/:id", gameplayController.getGameplayById);
+router.patch("/players/:id", gameplayController.updatePointsTable);
 
 module.exports = router;
