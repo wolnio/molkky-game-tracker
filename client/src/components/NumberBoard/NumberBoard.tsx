@@ -8,20 +8,30 @@ import { ClickedPins, Grid, Numbers, Wrapper } from "./NumberBoard.style";
 
 type NumberBoardProps = {
   data: TableData[];
-  setData: React.Dispatch<React.SetStateAction<TableData[]>>;
+  setData: React.Dispatch<React.SetStateAction<TableData[] | null>>;
 };
 
 export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
   const { token } = useAppSelector((state) => state.auth);
   const [clickedPins, setClickedPins] = useState<number[]>([]);
-  const [playerTurn, setPlayerTurn] = useState<number>(1);
+  const [playerTurn, setPlayerTurn] = useState<number>(0);
   const playersNumber = data.length;
-  console.log("NUMBVER", playersNumber, data);
 
   useEffect(() => {
-    if (data[0].points.length !== 0) return;
+    if (data[0].points.length === 0) return;
 
-    data.map((singleData) => console.log("asdasd", singleData));
+    let currentPlayer = 0;
+    let maxTurns = data[0].points.length;
+    data.every((singleData, index) => {
+      const numberOfTurns = singleData.points.length;
+
+      if (numberOfTurns < maxTurns) {
+        currentPlayer = index;
+        return false;
+      }
+      return true;
+    });
+    setPlayerTurn(currentPlayer);
   }, []);
 
   const handleOnClick = (
@@ -39,8 +49,7 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
   };
 
   const handleSavePointsToDB = async () => {
-    const { _id: playersId, ...updatedPointsBody } = data[playerTurn - 1];
-    console.log("PLAYER", playersId, JSON.stringify(updatedPointsBody));
+    const { _id: playersId, ...updatedPointsBody } = data[playerTurn];
 
     try {
       const response = await fetch(
@@ -54,10 +63,6 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
           body: JSON.stringify(updatedPointsBody),
         }
       );
-
-      if (response.ok) {
-        console.log("OKOKOOK");
-      }
     } catch (error) {
       console.log(`Error while fetching player with ID: ${playersId}.`, error);
     }
@@ -72,12 +77,17 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
       clickedPins.length > 1 ? clickedPins.length : clickedPins[0];
 
     const modifiedData = [...data];
-    modifiedData[playerTurn - 1].points.push(clickedPins);
-    modifiedData[playerTurn - 1].score += calculatedScore;
+    const currentPlayerData = modifiedData[playerTurn];
+
+    currentPlayerData.points.push(clickedPins);
+
+    if (currentPlayerData.score + calculatedScore > 50)
+      modifiedData[playerTurn].score = 25;
+    else modifiedData[playerTurn].score += calculatedScore;
 
     setData(modifiedData);
     setPlayerTurn((prevTurn) =>
-      prevTurn === playersNumber ? 1 : prevTurn + 1
+      prevTurn === playersNumber - 1 ? 0 : prevTurn + 1
     );
     setClickedPins([]);
 
@@ -105,17 +115,21 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
 
   return (
     <Wrapper>
-      <Grid className="parent">{drawPinsSetup()}</Grid>
-      <ClickedPins>
-        <p>Clicked pins: </p>
-        <Numbers>{clickedPins.join(" ")}</Numbers>
-      </ClickedPins>
-      <SubmitButton
-        onClick={(e) => handleOnSubmit(e)}
-        disabled={clickedPins.length === 0}
-      >
-        Submit
-      </SubmitButton>
+      {data && (
+        <>
+          <Grid className="parent">{drawPinsSetup()}</Grid>
+          <ClickedPins>
+            <p>Clicked pins: </p>
+            <Numbers>{clickedPins.join(" ")}</Numbers>
+          </ClickedPins>
+          <SubmitButton
+            onClick={(e) => handleOnSubmit(e)}
+            disabled={clickedPins.length === 0}
+          >
+            Submit
+          </SubmitButton>
+        </>
+      )}
     </Wrapper>
   );
 };

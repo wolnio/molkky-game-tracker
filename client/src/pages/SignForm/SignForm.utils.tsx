@@ -40,8 +40,6 @@ export const useSignFormHandler = () => {
           navigate("/auth/dashboard", { replace: true });
         }
       }
-
-      console.log("responseData: ", responseData);
     } catch (err) {
       console.log("err", err);
     }

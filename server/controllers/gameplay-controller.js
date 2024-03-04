@@ -2,7 +2,6 @@ const Gameplay = require("../model/gameplay.model");
 
 const newGameplay = async (req, res, next) => {
   const { players, title } = req.body;
-  console.log("NEW GAMEPLAY", req);
 
   const createdGameplay = new Gameplay({
     creator: req.userData.userId,

@@ -10,15 +10,7 @@ export const Board = () => {
   const { gameplayId } = useParams();
   const { token } = useAppSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
-
-  const initialData: TableData[] = [
-    {
-      username: "",
-      points: [],
-      score: 0,
-    },
-  ];
-  const [tableData, setTableData] = useState<TableData[]>(initialData);
+  const [tableData, setTableData] = useState<TableData[] | null>(null);
 
   useEffect(() => {
     const getGameplay = async () => {
@@ -54,12 +46,14 @@ export const Board = () => {
 
   if (isLoading) return <div>LOADING</div>;
 
-  return (
+  return tableData ? (
     <Wrapper>
       <NumberBoard data={tableData} setData={setTableData} />
       <TableContainer>
         <Table data={tableData} />
       </TableContainer>
     </Wrapper>
+  ) : (
+    <div>NULLLLLLLL</div>
   );
 };
