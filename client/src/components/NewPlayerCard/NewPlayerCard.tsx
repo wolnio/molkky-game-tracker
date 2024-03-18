@@ -2,7 +2,7 @@ import { ChangeEvent, FC, useState } from "react";
 import { Player } from "../../pages/AddPlayer/AddPlayer";
 import { ColorPicker } from "../ColorPicker/ColorPicker";
 import { Input } from "../common/Input.styles";
-import { Container, TempButton } from "./NewPlayerCard.style";
+import { Container, IndexNumber, TempButton } from "./NewPlayerCard.style";
 
 type NewPlayerCardProps = {
   data: Player;
@@ -22,7 +22,7 @@ export const NewPlayerCard: FC<NewPlayerCardProps> = ({
 
   return (
     <Container $choosedBgColor={rgbNumericValues}>
-      <span>{index}</span>
+      <IndexNumber>{index}</IndexNumber>
       <Input
         placeholder="Name"
         onChange={(e: ChangeEvent<HTMLInputElement>) => onInputChange(e, data)}

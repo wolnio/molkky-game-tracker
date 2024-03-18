@@ -1,15 +1,20 @@
 import styled, { css } from "styled-components";
-import { glassBackground } from "../../styles/commonStyles";
+import { Input } from "../../components/common/Input.styles";
+import { SubmitButton } from "../../components/common/SubmitButton.styles";
+import {
+  commonBorder,
+  glassBackground,
+  outterBorderRadius,
+  Wrapper,
+} from "../../styles/commonStyles";
 
-export const Container = styled.div`
+export const PlayersContainer = styled.div`
   ${glassBackground}
+  ${commonBorder}
+  ${outterBorderRadius}
 
-  //width: 100%;
   padding: 15px;
-  //height: 600px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 export const GridContainer = styled.div<{ $shouldDisplayTwoColumns: boolean }>`
@@ -22,16 +27,39 @@ export const GridContainer = styled.div<{ $shouldDisplayTwoColumns: boolean }>`
     `}
 `;
 
-export const AddNewPlayerButton = styled.button`
-  ${glassBackground}
+export const AddNewPlayerButton = styled(SubmitButton)`
+  ${outterBorderRadius}
 
-  width: 600px;
-  height: 90px;
-  font-family: "Lato";
+  width: 400px;
+  height: 60px;
   font-size: 25px;
+`;
 
-  &:hover {
-    cursor: pointer;
-    background: rgba(140, 140, 140, 0.25);
-  }
+export const CreateGameBtn = styled(AddNewPlayerButton)`
+  background: #c4eece;
+`;
+
+export const ColumnWrapper = styled(Wrapper)`
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+`;
+
+export const TitleContainer = styled.div`
+  ${glassBackground}
+  ${commonBorder}
+  ${outterBorderRadius}
+
+  padding: 10px 30px;
+  display: flex;
+  justify-content: center;
+`;
+
+export const TitleInput = styled(Input)`
+  font-weight: 600;
+  font-size: 30px;
+  text-align: center;
+  padding: 0;
+  padding-bottom: 5px;
+  width: 400px;
 `;

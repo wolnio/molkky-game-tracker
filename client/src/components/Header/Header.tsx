@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import { setCredentials } from "../../store/authStore/authSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { HeaderTitle, Wrapper } from "./Header.style";
+import {
+  ActionSection,
+  HeaderLinks,
+  HeaderTitle,
+  LogoutBtn,
+  StyledLink,
+  UserInfo,
+  Wrapper,
+} from "./Header.style";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
@@ -22,15 +30,19 @@ export const Header = () => {
     <Wrapper>
       <HeaderTitle>Molkky</HeaderTitle>
       {username && (
-        <>
-          <button onClick={handleLogout}>Log out</button>
-          <Link to={"/auth/dashboard"}>Dashboard</Link>
-          <Link to={"/auth/board"}>Board</Link>
-          <Link to={"/auth/addPlayer"}>Add player</Link>
-          <Link to={"/auth/gameplays"}>Gameplays</Link>
-        </>
+        <ActionSection>
+          <HeaderLinks>
+            <StyledLink to={"/auth/dashboard"}>Dashboard</StyledLink>
+            <StyledLink to={"/auth/board"}>Board</StyledLink>
+            <StyledLink to={"/auth/addPlayer"}>Add player</StyledLink>
+            <StyledLink to={"/auth/gameplays"}>Gameplays</StyledLink>
+          </HeaderLinks>
+          <UserInfo>
+            <p>Logged: {!!username ? username : "NOT"}</p>
+            <LogoutBtn onClick={handleLogout}>Log out</LogoutBtn>
+          </UserInfo>
+        </ActionSection>
       )}
-      <p>Logged: {!!username ? username : "NOT"}</p>
     </Wrapper>
   );
 };

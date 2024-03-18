@@ -1,13 +1,20 @@
 import styled from "styled-components";
-import { glassBackground } from "../../styles/commonStyles";
+import { celadon } from "../../styles/colorPalette";
+import {
+  glassBackground,
+  commonBorder,
+  innerBorderRadius,
+} from "../../styles/commonStyles";
 
 export const SubmitButton = styled.button`
   ${glassBackground}
+  ${commonBorder}
+  ${innerBorderRadius}
 
-  background: rgba(113, 255, 120, 0.4);
-  border: 3px solid rgba(113, 255, 120, 0.6);
+  background: rgba(255, 255, 255, 0.8);
   &:hover {
-    background: rgba(113, 255, 120, 0.7);
+    background: ${celadon.hex};
+    cursor: pointer;
   }
   &:disabled {
     background: rgba(145, 145, 145, 0.43);
@@ -20,5 +27,4 @@ export const SubmitButton = styled.button`
 
   width: 100%;
   height: 40px;
-  margin-top: 10px;
 `;

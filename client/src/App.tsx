@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import {
-	createBrowserRouter,
-	Navigate,
-	Outlet,
-	redirect,
-	RouterProvider,
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
 } from "react-router-dom";
 import { Header } from "./components/Header/Header";
 import { AddPlayer } from "./pages/AddPlayer/AddPlayer";
@@ -17,63 +16,63 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { MainContainer } from "./styles/commonStyles";
 
 function PrivateRoute() {
-	const { token } = useAppSelector((state) => state.auth);
-	return token ? <Outlet /> : <Navigate to="/login" />;
+  const { token } = useAppSelector((state) => state.auth);
+  return token ? <Outlet /> : <Navigate to="/login" />;
 }
 
 function App() {
-	const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-	const router = createBrowserRouter([
-		{
-			path: "/",
-			element: (
-				<MainContainer>
-					<Header />
-					<Outlet />
-				</MainContainer>
-			),
-			children: [
-				{
-					path: "login",
-					element: <Login />,
-				},
-				{
-					path: "auth",
-					element: <PrivateRoute />,
-					children: [
-						{
-							path: "board/:gameplayId",
-							element: <Board />,
-						},
-						{
-							path: "addPlayer",
-							element: <AddPlayer />,
-						},
-						{
-							path: "dashboard",
-							element: <WelcomePage />,
-						},
-						{
-							path: "gameplays",
-							element: <GameplaysList />,
-						},
-					],
-				},
-			],
-		},
-	]);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <MainContainer>
+          <Header />
+          <Outlet />
+        </MainContainer>
+      ),
+      children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "auth",
+          element: <PrivateRoute />,
+          children: [
+            {
+              path: "board/:gameplayId",
+              element: <Board />,
+            },
+            {
+              path: "addPlayer",
+              element: <AddPlayer />,
+            },
+            {
+              path: "dashboard",
+              element: <WelcomePage />,
+            },
+            {
+              path: "gameplays",
+              element: <GameplaysList />,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
 
-	useEffect(() => {
-		const existingUser = localStorage.getItem("user");
+  useEffect(() => {
+    const existingUser = localStorage.getItem("user");
 
-		if (existingUser) {
-			const { username, token } = JSON.parse(existingUser);
-			dispatch(setCredentials({ username, token }));
-		}
-	}, []);
+    if (existingUser) {
+      const { username, token } = JSON.parse(existingUser);
+      dispatch(setCredentials({ username, token }));
+    }
+  }, []);
 
-	return <RouterProvider router={router} />;
+  return <RouterProvider router={router} />;
 }
 
 export default App;

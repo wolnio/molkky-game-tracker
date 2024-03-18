@@ -5,7 +5,6 @@ export const Container = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   width: 200px;
-  margin-left: 50px;
 `;
 
 export const Color = styled.div<{ $colorValue: string; $isDisabled: boolean }>`

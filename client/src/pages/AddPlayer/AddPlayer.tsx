@@ -4,8 +4,12 @@ import { useAppSelector } from "../../store/hooks";
 import { Wrapper } from "../../styles/commonStyles";
 import {
   AddNewPlayerButton,
-  Container,
+  ColumnWrapper,
+  PlayersContainer,
   GridContainer,
+  TitleContainer,
+  TitleInput,
+  CreateGameBtn,
 } from "./AddPlayer.style";
 
 export type Player = {
@@ -71,10 +75,15 @@ export const AddPlayer = () => {
   };
 
   return (
-    <Wrapper>
-      <Container>
-        <label htmlFor="title">Title</label>
-        <input type="text" id="title" onBlur={handleTitleOnBlur} />
+    <ColumnWrapper>
+      <TitleContainer>
+        <TitleInput
+          type="text"
+          onBlur={handleTitleOnBlur}
+          placeholder={"Title"}
+        />
+      </TitleContainer>
+      <PlayersContainer>
         <GridContainer $shouldDisplayTwoColumns={players.length > 4}>
           {players.map((item, index) => (
             <NewPlayerCard
@@ -86,13 +95,13 @@ export const AddPlayer = () => {
             />
           ))}
         </GridContainer>
-        {players.length < 8 && (
-          <AddNewPlayerButton onClick={handleAddNewPlayer}>
-            ADD NEW
-          </AddNewPlayerButton>
-        )}
-        <button onClick={handleCreateGame}>Create game</button>
-      </Container>
-    </Wrapper>
+      </PlayersContainer>
+      {players.length < 8 && (
+        <AddNewPlayerButton onClick={handleAddNewPlayer}>
+          Add new
+        </AddNewPlayerButton>
+      )}
+      <CreateGameBtn onClick={handleCreateGame}>Create game</CreateGameBtn>
+    </ColumnWrapper>
   );
 };

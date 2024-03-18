@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap");
 html {
   /* To make use of full height of page*/
   min-height: 100%;
@@ -11,9 +11,25 @@ body {
   min-height: 100%;
   width: 100%;
   font-family: "Lato";
+  color: #453f3c;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: linear-gradient(135deg, #13ecfb 0%, #7249fa 100%);
+  //background-image: linear-gradient(135deg, #13ecfb 0%, #7249fa 100%);
+  background: radial-gradient(
+      ellipse 800px 800px at 12% 8%,
+      rgba(193, 237, 204, 1) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ),
+    radial-gradient(
+      ellipse 400px 450px at 55% 90%,
+      rgba(167, 167, 169, 1) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ),
+    radial-gradient(
+      ellipse 500px 500px at 90% 27%,
+      rgba(176, 192, 188, 1) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
 }
 
 code {

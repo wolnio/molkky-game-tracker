@@ -1,13 +1,20 @@
 import { css, styled } from "styled-components";
 import { Input } from "../../components/common/Input.styles";
-import { glassBackground } from "../../styles/commonStyles";
+import { celadon, taupe } from "../../styles/colorPalette";
+import {
+  glassBackground,
+  commonBorder,
+  outterBorderRadius,
+} from "../../styles/commonStyles";
 
 export const Container = styled.div`
+  ${commonBorder}
   ${glassBackground}
+  ${outterBorderRadius}
 
   margin: 0 auto;
   width: 400px;
-  padding: 20px;
+  padding: 30px;
 
   & h2 {
     margin: 0;
@@ -21,23 +28,22 @@ export const FormContainer = styled.form`
 `;
 
 export const LabelInputContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center;
   margin-bottom: 20px;
+  font-weight: 700;
 `;
 
 export const Label = styled.label`
   width: 95px;
+  margin-left: 15px;
+  font-size: 15px;
 `;
 
 export const InputErrorContainer = styled.div`
-  //width: 250px;
+  display: flex;
+  flex-direction: column;
 `;
 
-export const SignInput = styled(Input)`
-  width: 100%;
-`;
+export const SignInput = styled(Input)``;
 
 export const ValidationMessage = styled.span`
   color: red;
@@ -53,18 +59,18 @@ export const HeaderTabs = styled.div`
 
 export const Tab = styled.div<{ $isActive: boolean }>`
   width: 100%;
-  height: 30px;
+  height: 40px;
   text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.54);
+  border-bottom: 1px solid ${taupe.hex};
   box-sizing: border-box;
   cursor: default;
-  font-size: 18px;
+  font-size: 23px;
 
   ${(props) =>
     props.$isActive
       ? css`
-          border-bottom: 3px solid rgba(0, 17, 255, 0.54);
-          font-weight: 600;
+          border-bottom: 4px solid ${celadon.hex};
+          font-weight: 700;
         `
       : css`
           &:hover {
