@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { NumberBoard } from "../components/NumberBoard/NumberBoard";
-import { Table } from "../components/Table/Table";
-import { TableData } from "../components/Table/TableData.interface";
-import { useAppSelector } from "../store/hooks";
-import { TableContainer, Wrapper } from "../styles/commonStyles";
+import { NumberBoard } from "../../components/NumberBoard/NumberBoard";
+import { Table } from "../../components/Table/Table";
+import { TableData } from "../../components/Table/TableData.interface";
+import { useAppSelector } from "../../store/hooks";
+import { TableContainer } from "../../styles/commonStyles";
+import { BoardWrapper } from "./Board.styles";
 
 export const Board = () => {
   const { gameplayId } = useParams();
@@ -47,12 +48,12 @@ export const Board = () => {
   if (isLoading) return <div>LOADING</div>;
 
   return tableData ? (
-    <Wrapper>
+    <BoardWrapper>
       <NumberBoard data={tableData} setData={setTableData} />
       <TableContainer>
         <Table data={tableData} />
       </TableContainer>
-    </Wrapper>
+    </BoardWrapper>
   ) : (
     <div>NULLLLLLLL</div>
   );

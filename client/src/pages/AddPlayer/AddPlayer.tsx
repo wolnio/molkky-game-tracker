@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { NewPlayerCard } from "../../components/NewPlayerCard/NewPlayerCard";
 import { useAppSelector } from "../../store/hooks";
-import { Wrapper } from "../../styles/commonStyles";
 import {
   AddNewPlayerButton,
   ColumnWrapper,

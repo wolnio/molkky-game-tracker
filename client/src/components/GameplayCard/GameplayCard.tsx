@@ -2,46 +2,45 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { SeparateLine } from "../common/SeparateLine.style";
 import { GameplayCardInterface } from "./GameplayCard.interface";
 import {
-	CardContainer,
-	PlayersGrid,
-	ServerInfo,
-	StatusText,
-	Title,
+  CardContainer,
+  CreatedText,
+  PlayersGrid,
+  ServerInfo,
+  StatusText,
+  Title,
 } from "./GameplayCard.style";
 
 export const GameplayCard: FC<GameplayCardInterface> = ({
-	_id,
-	title,
-	players,
-	created,
-	status,
+  _id,
+  title,
+  players,
+  created,
+  status,
 }) => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	dayjs.extend(relativeTime);
+  dayjs.extend(relativeTime);
 
-	const handleOnClick = () => {
-		navigate(`../board/${_id}`, { replace: true });
-	};
+  const handleOnClick = () => {
+    navigate(`../board/${_id}`, { replace: true });
+  };
 
-	return (
-		<CardContainer onClick={handleOnClick}>
-			<Title>{title}</Title>
-			<ServerInfo>
-				<StatusText>{status}</StatusText>
-				<span>
-					Created:
-					<br />
-					{dayjs(created).fromNow()}
-				</span>
-			</ServerInfo>
-			<PlayersGrid>
-				{players.map((player) => (
-					<span>{player.username}</span>
-				))}
-			</PlayersGrid>
-		</CardContainer>
-	);
+  return (
+    <CardContainer onClick={handleOnClick}>
+      <Title>{title}</Title>
+      <ServerInfo>
+        <StatusText>{status}</StatusText>
+        <CreatedText>Created:{" " + dayjs(created).fromNow()}</CreatedText>
+      </ServerInfo>
+      <SeparateLine />
+      <PlayersGrid>
+        {players.map((player) => (
+          <span>{player.username}</span>
+        ))}
+      </PlayersGrid>
+    </CardContainer>
+  );
 };

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { Header } from "./components/Header/Header";
 import { AddPlayer } from "./pages/AddPlayer/AddPlayer";
-import { Board } from "./pages/Board";
+import { Board } from "./pages/Board/Board";
 import { GameplaysList } from "./pages/Gameplays/GameplaysList";
 import { Login } from "./pages/SignForm/SignForm";
 import { WelcomePage } from "./pages/WelcomePage/WelcomePage";

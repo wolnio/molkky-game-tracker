@@ -8,6 +8,7 @@ const gameplay = new Schema({
       username: String,
       points: { type: [[Number]], default: null },
       score: { type: Number, default: null },
+      loss: { type: Boolean, default: false },
     },
   ],
   status: { type: String, default: "RUNNING" },

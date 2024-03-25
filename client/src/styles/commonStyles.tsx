@@ -24,16 +24,14 @@ export const noisyBg = css`
 `;
 
 export const Wrapper = styled.div`
-  margin: 3rem auto 0;
+  margin: 3rem;
   display: flex;
   justify-content: center;
   height: 100%;
 `;
 
 export const TableContainer = styled.div`
-  width: 100%;
   max-height: 80vh;
-  overflow: auto;
 `;
 
 export const MainContainer = styled.div`

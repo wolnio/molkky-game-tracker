@@ -1,10 +1,20 @@
 import React, { FC, useEffect } from "react";
 import { useState } from "react";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+  setCurrentPlayerTurn,
+  setNextPlayerTurn,
+} from "../../store/playerSlice";
 import { RoundButton } from "../common/RoundButton/RoundButton.styles";
 import { SubmitButton } from "../common/SubmitButton.styles";
 import { TableData } from "../Table/TableData.interface";
-import { ClickedPins, Grid, Numbers, Wrapper } from "./NumberBoard.style";
+import {
+  ClickedPins,
+  Grid,
+  MissedButton,
+  Numbers,
+  Wrapper,
+} from "./NumberBoard.style";
 
 type NumberBoardProps = {
   data: TableData[];
@@ -13,9 +23,15 @@ type NumberBoardProps = {
 
 export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
   const { token } = useAppSelector((state) => state.auth);
+  const { currentPlayerTurn } = useAppSelector((state) => state.player);
+  const dispatch = useAppDispatch();
   const [clickedPins, setClickedPins] = useState<number[]>([]);
-  const [playerTurn, setPlayerTurn] = useState<number>(0);
   const playersNumber = data.length;
+
+  useEffect(() => {
+    if (data[currentPlayerTurn].loss)
+      dispatch(setNextPlayerTurn({ numberOfPlayers: playersNumber }));
+  }, [currentPlayerTurn]);
 
   useEffect(() => {
     if (data[0].points.length === 0) return;
@@ -25,13 +41,13 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
     data.every((singleData, index) => {
       const numberOfTurns = singleData.points.length;
 
-      if (numberOfTurns < maxTurns) {
+      if (numberOfTurns < maxTurns && !singleData.loss) {
         currentPlayer = index;
         return false;
       }
       return true;
     });
-    setPlayerTurn(currentPlayer);
+    dispatch(setCurrentPlayerTurn({ playerIdToBeSet: currentPlayer }));
   }, []);
 
   const handleOnClick = (
@@ -49,7 +65,7 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
   };
 
   const handleSavePointsToDB = async () => {
-    const { _id: playersId, ...updatedPointsBody } = data[playerTurn];
+    const { _id: playersId, ...updatedPointsBody } = data[currentPlayerTurn];
 
     try {
       const response = await fetch(
@@ -68,8 +84,25 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
     }
   };
 
-  const handleOnSubmit = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  const checkIfPlayerLost = (playerData: TableData) => {
+    const { points } = playerData;
+    const flatPointsArray = points.flat();
+
+    for (let i = 0; i < flatPointsArray.length - 1; i++) {
+      if (
+        flatPointsArray[i] === 0 &&
+        flatPointsArray[i + 1] === 0 &&
+        flatPointsArray[i + 2] === 0
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const handleBoardButtonClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    isMissed: boolean
   ) => {
     e.preventDefault();
 
@@ -77,20 +110,24 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
       clickedPins.length > 1 ? clickedPins.length : clickedPins[0];
 
     const modifiedData = [...data];
-    const currentPlayerData = modifiedData[playerTurn];
+    const currentPlayerData = modifiedData[currentPlayerTurn];
 
-    currentPlayerData.points.push(clickedPins);
+    if (isMissed) {
+      currentPlayerData.points.push([0]);
+      currentPlayerData.loss = checkIfPlayerLost(currentPlayerData);
+    } else {
+      currentPlayerData.points.push(clickedPins);
 
-    if (currentPlayerData.score + calculatedScore > 50)
-      modifiedData[playerTurn].score = 25;
-    else modifiedData[playerTurn].score += calculatedScore;
+      if (currentPlayerData.score + calculatedScore > 50)
+        currentPlayerData.score = 25;
+      else currentPlayerData.score += calculatedScore;
+    }
+
+    dispatch(setNextPlayerTurn({ numberOfPlayers: playersNumber }));
 
     setData(modifiedData);
-    setPlayerTurn((prevTurn) =>
-      prevTurn === playersNumber - 1 ? 0 : prevTurn + 1
-    );
+    //setNextPlayerTurn(playersNumber);
     setClickedPins([]);
-
     handleSavePointsToDB();
   };
 
@@ -117,13 +154,16 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
     <Wrapper>
       {data && (
         <>
+          <MissedButton onClick={(e) => handleBoardButtonClick(e, true)}>
+            Miss!
+          </MissedButton>
           <Grid className="parent">{drawPinsSetup()}</Grid>
           <ClickedPins>
             <p>Clicked pins: </p>
             <Numbers>{clickedPins.join(" ")}</Numbers>
           </ClickedPins>
           <SubmitButton
-            onClick={(e) => handleOnSubmit(e)}
+            onClick={(e) => handleBoardButtonClick(e, false)}
             disabled={clickedPins.length === 0}
           >
             Submit

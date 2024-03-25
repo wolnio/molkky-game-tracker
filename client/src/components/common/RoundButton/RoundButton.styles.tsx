@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import { glassBackground } from "../../../styles/commonStyles";
+import { commonBorder, glassBackground } from "../../../styles/commonStyles";
 
 export const RoundButton = styled.button<{ $isActive: boolean }>`
   ${glassBackground}
+  ${commonBorder}
 
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   font-size: 25px;
   font-family: "Lato";
   font-weight: 300;
@@ -14,5 +15,6 @@ export const RoundButton = styled.button<{ $isActive: boolean }>`
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
   }
 `;

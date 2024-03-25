@@ -18,7 +18,8 @@ export const SubmitButton = styled.button`
   }
   &:disabled {
     background: rgba(145, 145, 145, 0.43);
-    border: 3px solid rgba(145, 145, 145, 0.6);
+    border: 1px solid rgba(145, 145, 145, 0.6);
+    cursor: not-allowed;
   }
 
   font-size: 20px;
