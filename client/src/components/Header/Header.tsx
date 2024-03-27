@@ -32,7 +32,6 @@ export const Header = () => {
         <ActionSection>
           <HeaderLinks>
             <StyledLink to={"/auth/dashboard"}>Dashboard</StyledLink>
-            <StyledLink to={"/auth/board"}>Board</StyledLink>
             <StyledLink to={"/auth/addPlayer"}>Add player</StyledLink>
             <StyledLink to={"/auth/gameplays"}>Gameplays</StyledLink>
           </HeaderLinks>

@@ -66,9 +66,11 @@ export const Login = () => {
                   {...register(name as "email" | "password", validationRules)}
                   $isError={errors.hasOwnProperty(name)}
                 />
-                <ValidationMessage>
-                  {errors[name as "email" | "password"]?.message}
-                </ValidationMessage>
+                {errors[name as "email" | "password"] && (
+                  <ValidationMessage>
+                    {errors[name as "email" | "password"]?.message}
+                  </ValidationMessage>
+                )}
               </InputErrorContainer>
             </LabelInputContainer>
           );

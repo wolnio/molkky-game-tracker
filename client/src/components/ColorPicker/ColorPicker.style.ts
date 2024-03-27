@@ -4,7 +4,6 @@ export const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  width: 200px;
 `;
 
 export const Color = styled.div<{ $colorValue: string; $isDisabled: boolean }>`

@@ -17,11 +17,13 @@ import { MainContainer } from "./styles/commonStyles";
 
 function PrivateRoute() {
   const { token } = useAppSelector((state) => state.auth);
+  console.log("private", !!token);
   return token ? <Outlet /> : <Navigate to="/login" />;
 }
 
 function App() {
   const dispatch = useAppDispatch();
+  const existingUser = localStorage.getItem("user");
 
   const router = createBrowserRouter([
     {
@@ -64,13 +66,14 @@ function App() {
   ]);
 
   useEffect(() => {
-    const existingUser = localStorage.getItem("user");
-
+    console.log("APP EFFECT");
     if (existingUser) {
       const { username, token } = JSON.parse(existingUser);
       dispatch(setCredentials({ username, token }));
+    } else {
+      dispatch(setCredentials({ username: null, token: null }));
     }
-  }, []);
+  }, [existingUser]);
 
   return <RouterProvider router={router} />;
 }

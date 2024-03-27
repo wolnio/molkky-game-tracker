@@ -10,7 +10,7 @@ const disabledBg = css`
 export const StyledTable = styled.table`
   ${innerBorderRadius}
   display:block;
-  max-height: 700px;
+  max-height: 100%;
   overflow: auto;
   overflow-x: hidden;
 

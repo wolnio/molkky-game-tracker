@@ -64,6 +64,7 @@ export const ClickedPins = styled.div`
   ${commonBorder}
   ${outterBorderRadius}
 
+  position:relative;
   padding: 10px;
   margin: 25px 0;
   width: 100%;
@@ -71,6 +72,7 @@ export const ClickedPins = styled.div`
 
   & p {
     margin: 0;
+    margin-bottom: 10px;
   }
 `;
 
@@ -78,7 +80,7 @@ export const Numbers = styled.p`
   font-weight: 700;
   font-size: 30px;
   text-align: center;
-  height: 40px;
+  min-height: 40px;
 `;
 
 export const MissedButton = styled.button`
@@ -90,12 +92,12 @@ export const MissedButton = styled.button`
   background: rgba(249, 87, 56, 0.35);
   border-color: rgba(249, 87, 56, 0.7);
   width: 70px;
-  height: 40px;
+  height: 30px;
   position: absolute;
-  left: 60px;
-  top: 210px;
+  right: 5px;
+  top: 5px;
 
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 300;
   font-family: "Lato";
 

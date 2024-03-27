@@ -18,13 +18,15 @@ export const PlayersContainer = styled.div`
 `;
 
 export const GridContainer = styled.div<{ $shouldDisplayTwoColumns: boolean }>`
-  ${(props) =>
-    props.$shouldDisplayTwoColumns &&
-    css`
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: 15px;
-    `}
+  @media (min-width: 1150px) {
+    ${(props) =>
+      props.$shouldDisplayTwoColumns &&
+      css`
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 15px;
+      `}
+  }
 `;
 
 export const AddNewPlayerButton = styled(SubmitButton)`

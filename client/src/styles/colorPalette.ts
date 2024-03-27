@@ -31,3 +31,8 @@ export const taupe = {
 export const orangeRed = {
   hex: "#fc5130",
 };
+
+export const error = {
+  text: "#cd0000",
+  background: "#f2abab",
+};

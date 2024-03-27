@@ -1,6 +1,6 @@
 import { css, styled } from "styled-components";
 import { Input } from "../../components/common/Input.styles";
-import { celadon, taupe } from "../../styles/colorPalette";
+import { celadon, error, taupe } from "../../styles/colorPalette";
 import {
   glassBackground,
   commonBorder,
@@ -40,17 +40,24 @@ export const Label = styled.label`
 
 export const InputErrorContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  position: relative;
 `;
 
-export const SignInput = styled(Input)``;
+export const SignInput = styled(Input)`
+  flex: 1;
+`;
 
 export const ValidationMessage = styled.span`
-  color: red;
-  display: block;
-  margin: 0;
-  font-size: 13px;
-  right: 0;
+  position: absolute;
+  color: ${error.text};
+  margin-left: 10px;
+  padding: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  left: 400px;
+  width: 200px;
+  background: ${error.background};
+  border-radius: 2px;
 `;
 
 export const HeaderTabs = styled.div`

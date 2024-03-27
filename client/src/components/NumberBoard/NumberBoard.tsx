@@ -154,11 +154,11 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
     <Wrapper>
       {data && (
         <>
-          <MissedButton onClick={(e) => handleBoardButtonClick(e, true)}>
-            Miss!
-          </MissedButton>
           <Grid className="parent">{drawPinsSetup()}</Grid>
           <ClickedPins>
+            <MissedButton onClick={(e) => handleBoardButtonClick(e, true)}>
+              Miss!
+            </MissedButton>
             <p>Clicked pins: </p>
             <Numbers>{clickedPins.join(" ")}</Numbers>
           </ClickedPins>
