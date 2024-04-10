@@ -16,8 +16,10 @@ import { useSignFormHandler } from "./SignForm.utils";
 import { InputType, SigninForm, SignupForm } from "./SignFormModel";
 
 export const Login = () => {
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState, reset } = useForm({
     defaultValues: { email: "", password: "" },
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
   const errors = formState.errors;
 
@@ -31,6 +33,7 @@ export const Login = () => {
     setCurrentForm((prevForm) =>
       prevForm === SigninForm ? SignupForm : SigninForm
     );
+    reset();
   };
 
   return (
@@ -54,27 +57,33 @@ export const Login = () => {
           signHandler(data, currentForm === SigninForm ? "signin" : "signup")
         )}
       >
-        {currentForm.map(({ name, label, type, validationRules }, index) => {
-          return (
-            <LabelInputContainer>
-              <Label htmlFor={name}>{label}</Label>
-              <InputErrorContainer>
-                <SignInput
-                  key={index}
-                  id={name}
-                  type={type}
-                  {...register(name as "email" | "password", validationRules)}
-                  $isError={errors.hasOwnProperty(name)}
-                />
-                {errors[name as "email" | "password"] && (
-                  <ValidationMessage>
-                    {errors[name as "email" | "password"]?.message}
-                  </ValidationMessage>
-                )}
-              </InputErrorContainer>
-            </LabelInputContainer>
-          );
-        })}
+        {currentForm.map(
+          ({ name, label, type, validationRules, isRequired }, index) => {
+            return (
+              <LabelInputContainer>
+                <Label htmlFor={name}>
+                  {label}
+                  {isRequired && " *"}
+                </Label>
+                <InputErrorContainer>
+                  <SignInput
+                    key={index}
+                    id={name}
+                    type={type}
+                    {...register(name as "email" | "password", validationRules)}
+                    $isError={errors.hasOwnProperty(name)}
+                    maxLength={15}
+                  />
+                  {errors[name as "email" | "password"] && (
+                    <ValidationMessage>
+                      {errors[name as "email" | "password"]?.message}
+                    </ValidationMessage>
+                  )}
+                </InputErrorContainer>
+              </LabelInputContainer>
+            );
+          }
+        )}
         <SubmitButton type="submit">Submit</SubmitButton>
       </FormContainer>
     </Container>

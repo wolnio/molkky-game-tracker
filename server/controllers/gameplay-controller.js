@@ -58,16 +58,24 @@ const getGameplayById = async (req, res, next) => {
   res.status(200).json(existingGameplay.map((gameplay) => gameplay.toObject()));
 };
 
-const updatePointsTable = async (req, res, next) => {
+const updatePlayerPoints = async (req, res, next) => {
   const { id: playerId } = req.params;
   const changes = req.body;
+  const { state } = changes;
   changes._id = playerId;
 
+  console.log("STATE", state);
+
   let existingPlayer;
+  let gameplayStatus = "RUNNING";
   try {
+    if (state === "WIN") {
+      gameplayStatus = "ENDED";
+    }
+    console.log("STATUS", gameplayStatus);
     existingPlayer = await Gameplay.findOneAndUpdate(
       { "players._id": playerId },
-      { $set: { "players.$": changes } },
+      { $set: { "players.$": changes, status: gameplayStatus } },
       { new: true }
     );
   } catch (err) {
@@ -81,7 +89,11 @@ const updatePointsTable = async (req, res, next) => {
   res.status(200).json(existingPlayer);
 };
 
+const updateGameplayStatus = async (req, res, next) => {
+  const {} = req.params;
+};
+
 exports.newGameplay = newGameplay;
 exports.getAllGameplays = getAllGameplays;
 exports.getGameplayById = getGameplayById;
-exports.updatePointsTable = updatePointsTable;
+exports.updatePlayerPoints = updatePlayerPoints;

@@ -1,9 +1,9 @@
-import { TableData } from "../Table/TableData.interface";
+import { GameplayStatus, TableData } from "../Table/TableData.interface";
 
 export type GameplayCardInterface = {
-	_id: string;
-	title: string;
-	players: TableData[];
-	created: Date;
-	status: string;
+  _id: string;
+  title: string;
+  players: TableData[];
+  created: Date;
+  status: GameplayStatus;
 };

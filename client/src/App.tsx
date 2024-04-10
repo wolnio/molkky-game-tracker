@@ -17,7 +17,6 @@ import { MainContainer } from "./styles/commonStyles";
 
 function PrivateRoute() {
   const { token } = useAppSelector((state) => state.auth);
-  console.log("private", !!token);
   return token ? <Outlet /> : <Navigate to="/login" />;
 }
 
@@ -66,7 +65,6 @@ function App() {
   ]);
 
   useEffect(() => {
-    console.log("APP EFFECT");
     if (existingUser) {
       const { username, token } = JSON.parse(existingUser);
       dispatch(setCredentials({ username, token }));

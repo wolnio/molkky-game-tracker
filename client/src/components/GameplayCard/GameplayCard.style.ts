@@ -1,9 +1,10 @@
-import { styled } from "styled-components";
+import { css, styled } from "styled-components";
 import {
   commonBorder,
   glassBackground,
   outterBorderRadius,
 } from "../../styles/commonStyles";
+import { GameplayStatus } from "../Table/TableData.interface";
 
 export const CardContainer = styled.div`
   ${commonBorder}
@@ -15,7 +16,7 @@ width: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 20px;
+  margin: 10px 20px;
 
   &:hover {
     cursor: pointer;
@@ -29,15 +30,24 @@ export const Title = styled.h3`
   margin: 0;
 `;
 
-export const StatusText = styled.div`
+export const StatusText = styled.div<{ $status: GameplayStatus }>`
   width: fit-content;
-  color: green;
-  background-color: lightgreen;
   font-weight: 800;
   font-size: 13px;
   display: flex;
   align-items: center;
   padding: 0 5px;
+
+  ${(props) =>
+    props.$status === GameplayStatus.RUNNING
+      ? css`
+          color: green;
+          background-color: lightgreen;
+        `
+      : css`
+          color: red;
+          background-color: lightpink;
+        `}
 `;
 
 export const CreatedText = styled.span`

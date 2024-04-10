@@ -8,7 +8,7 @@ import {
   Wrapper,
 } from "../../styles/commonStyles";
 
-export const PlayersContainer = styled.div`
+export const PlayersContainer = styled.form`
   ${glassBackground}
   ${commonBorder}
   ${outterBorderRadius}

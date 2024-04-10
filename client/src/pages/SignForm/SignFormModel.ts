@@ -3,6 +3,11 @@ export type InputType = {
   label: string;
   type: string;
   validationRules: {};
+  isRequired: boolean;
+};
+
+const errorMessages = {
+  required: "Field is required.",
 };
 
 export const SigninForm: InputType[] = [
@@ -11,16 +16,22 @@ export const SigninForm: InputType[] = [
     label: "E-mail",
     type: "email",
     validationRules: {
-      required: { value: true, message: "This field EMAIL is required." },
+      required: { value: true, message: errorMessages.required },
+      pattern: {
+        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+        message: "Invalid e-mail address.",
+      },
     },
+    isRequired: true,
   },
   {
     name: "password",
     label: "Password",
     type: "password",
     validationRules: {
-      required: { value: true, message: "This field PASSWORD is required." },
+      required: { value: true, message: errorMessages.required },
     },
+    isRequired: true,
   },
 ];
 
@@ -30,39 +41,44 @@ export const SignupForm: InputType[] = [
     label: "Name",
     type: "text",
     validationRules: {
-      required: { value: true, message: "This field name is required." },
+      required: { value: true, message: errorMessages.required },
     },
+    isRequired: true,
   },
   {
     name: "surname",
     label: "Surname",
     type: "text",
     validationRules: {
-      required: { value: true, message: "This field surname is required." },
+      required: { value: true, message: errorMessages.required },
     },
+    isRequired: true,
   },
   {
     name: "username",
     label: "Username",
     type: "text",
     validationRules: {
-      required: { value: true, message: "This field username is required." },
+      required: { value: true, message: errorMessages.required },
     },
+    isRequired: true,
   },
   {
     name: "email",
     label: "E-mail",
     type: "email",
     validationRules: {
-      required: { value: true, message: "This field EMAIL is required." },
+      required: { value: true, message: errorMessages.required },
     },
+    isRequired: true,
   },
   {
     name: "password",
     label: "Password",
     type: "password",
     validationRules: {
-      required: { value: true, message: "This field PASSWORD is required." },
+      required: { value: true, message: errorMessages.required },
     },
+    isRequired: true,
   },
 ];

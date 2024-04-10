@@ -28,6 +28,7 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   height: 100%;
+  flex-wrap: wrap;
 `;
 
 export const TableContainer = styled.div`

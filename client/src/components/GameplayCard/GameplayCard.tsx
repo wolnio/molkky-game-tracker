@@ -32,7 +32,7 @@ export const GameplayCard: FC<GameplayCardInterface> = ({
     <CardContainer onClick={handleOnClick}>
       <Title>{title}</Title>
       <ServerInfo>
-        <StatusText>{status}</StatusText>
+        <StatusText $status={status}>{status}</StatusText>
         <CreatedText>Created:{" " + dayjs(created).fromNow()}</CreatedText>
       </ServerInfo>
       <SeparateLine />

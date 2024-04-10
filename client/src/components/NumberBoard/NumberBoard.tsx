@@ -7,7 +7,11 @@ import {
 } from "../../store/playerSlice";
 import { RoundButton } from "../common/RoundButton/RoundButton.styles";
 import { SubmitButton } from "../common/SubmitButton.styles";
-import { TableData } from "../Table/TableData.interface";
+import {
+  GameplayStatus,
+  PlayerState,
+  TableData,
+} from "../Table/TableData.interface";
 import {
   ClickedPins,
   Grid,
@@ -18,10 +22,15 @@ import {
 
 type NumberBoardProps = {
   data: TableData[];
-  setData: React.Dispatch<React.SetStateAction<TableData[] | null>>;
+  setData: React.Dispatch<React.SetStateAction<TableData[]>>;
+  setGameplayStatus: React.Dispatch<React.SetStateAction<GameplayStatus>>;
 };
 
-export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
+export const NumberBoard: FC<NumberBoardProps> = ({
+  data,
+  setData,
+  setGameplayStatus,
+}) => {
   const { token } = useAppSelector((state) => state.auth);
   const { currentPlayerTurn } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
@@ -29,24 +38,28 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
   const playersNumber = data.length;
 
   useEffect(() => {
-    if (data[currentPlayerTurn].loss)
+    if (data[currentPlayerTurn]?.state === PlayerState.Lose)
       dispatch(setNextPlayerTurn({ numberOfPlayers: playersNumber }));
   }, [currentPlayerTurn]);
 
   useEffect(() => {
-    if (data[0].points.length === 0) return;
+    if (data[0].points.length === 0) {
+      dispatch(setCurrentPlayerTurn({ playerIdToBeSet: 0 }));
+      return;
+    }
 
     let currentPlayer = 0;
     let maxTurns = data[0].points.length;
     data.every((singleData, index) => {
       const numberOfTurns = singleData.points.length;
 
-      if (numberOfTurns < maxTurns && !singleData.loss) {
+      if (numberOfTurns < maxTurns && singleData.state !== PlayerState.Lose) {
         currentPlayer = index;
         return false;
       }
       return true;
     });
+
     dispatch(setCurrentPlayerTurn({ playerIdToBeSet: currentPlayer }));
   }, []);
 
@@ -79,6 +92,12 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
           body: JSON.stringify(updatedPointsBody),
         }
       );
+
+      if (response.ok) {
+        const responseData = await response.json();
+        responseData.status === GameplayStatus.ENDED &&
+          setGameplayStatus(GameplayStatus.ENDED);
+      }
     } catch (error) {
       console.log(`Error while fetching player with ID: ${playersId}.`, error);
     }
@@ -94,10 +113,10 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
         flatPointsArray[i + 1] === 0 &&
         flatPointsArray[i + 2] === 0
       ) {
-        return true;
+        return PlayerState.Lose;
       }
     }
-    return false;
+    return PlayerState.In_game;
   };
 
   const handleBoardButtonClick = (
@@ -114,19 +133,29 @@ export const NumberBoard: FC<NumberBoardProps> = ({ data, setData }) => {
 
     if (isMissed) {
       currentPlayerData.points.push([0]);
-      currentPlayerData.loss = checkIfPlayerLost(currentPlayerData);
+      currentPlayerData.state = checkIfPlayerLost(currentPlayerData);
     } else {
       currentPlayerData.points.push(clickedPins);
 
-      if (currentPlayerData.score + calculatedScore > 50)
-        currentPlayerData.score = 25;
-      else currentPlayerData.score += calculatedScore;
+      const overallScore = currentPlayerData.score + calculatedScore;
+
+      switch (true) {
+        case overallScore > 50:
+          currentPlayerData.score = 25;
+          break;
+        case overallScore === 50:
+          currentPlayerData.score = 50;
+          currentPlayerData.state = PlayerState.Win;
+
+          break;
+        default:
+          currentPlayerData.score += calculatedScore;
+      }
     }
 
     dispatch(setNextPlayerTurn({ numberOfPlayers: playersNumber }));
 
     setData(modifiedData);
-    //setNextPlayerTurn(playersNumber);
     setClickedPins([]);
     handleSavePointsToDB();
   };

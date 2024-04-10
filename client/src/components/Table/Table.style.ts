@@ -7,7 +7,7 @@ const disabledBg = css`
   color: rgba(139, 140, 137, 1);
 `;
 
-export const StyledTable = styled.table`
+export const StyledTable = styled.table<{ $isWinnerVisible: boolean }>`
   ${innerBorderRadius}
   display:block;
   max-height: 100%;
@@ -20,7 +20,13 @@ export const StyledTable = styled.table`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  padding: 1px 0;
+  padding: 1px;
+
+  ${(props) =>
+    props.$isWinnerVisible &&
+    css`
+      padding-top: 25px;
+    `}
 
   & td {
     padding: 5px;
@@ -38,6 +44,7 @@ export const StyledTable = styled.table`
     font-size: 18px;
     & tr th {
       ${glassBackground}
+      position:relative;
       backdrop-filter: none;
       background: rgba(221, 228, 226, 1);
       box-shadow: 0 0 0 1px black;
@@ -55,7 +62,7 @@ export const StyledTable = styled.table`
         border-radius: 0 10px 10px 0;
       }
 
-      &[data-isDisabled="true"] {
+      &[data-isdisabled="true"] {
         ${disabledBg}
       }
 
@@ -80,12 +87,12 @@ export const StyledTable = styled.table`
       max-width: 160px;
       font-weight: 400;
 
-      &[data-isDisabled="true"] {
+      &[data-isdisabled="true"] {
         ${disabledBg}
       }
     }
 
-    & :first-child {
+    & tr:first-child {
       & td:first-child {
         border-radius: 10px 0 0 0;
       }
@@ -94,12 +101,21 @@ export const StyledTable = styled.table`
       }
     }
 
-    & :last-child {
+    & tr:last-child {
       & td:first-child {
         border-radius: 0 0 0 10px;
       }
       & td:last-child {
         border-radius: 0 0 10px 0;
+      }
+    }
+
+    & tr:only-child {
+      & td:first-child {
+        border-radius: 10px 0 0 10px;
+      }
+      & td:last-child {
+        border-radius: 0 10px 10px 0;
       }
     }
   }
@@ -123,7 +139,7 @@ export const StyledTable = styled.table`
         border-radius: 0 10px 10px 0;
       }
 
-      &[data-isDisabled="true"] {
+      &[data-isdisabled="true"] {
         ${disabledBg}
       }
     }
@@ -143,4 +159,13 @@ export const PointOutline = styled.div<{ disabled: boolean }>`
   font-size: 15px;
 
   border-color: ${(props) => props.disabled && "rgba(139, 140, 137, 1)"};
+`;
+
+export const WinBadge = styled.div`
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
+  color: goldenrod;
+  background: gold;
 `;

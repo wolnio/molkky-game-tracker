@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { Color, Container } from "./ColorPicker.style";
 
 export const ColorPicker = ({
@@ -31,7 +30,7 @@ export const ColorPicker = ({
           key={`color-${index}`}
           $colorValue={color}
           onClick={() => handleOnClick(color)}
-          $isDisabled={pickedColor !== color}
+          $isdisabled={pickedColor !== color}
         />
       ))}
     </Container>

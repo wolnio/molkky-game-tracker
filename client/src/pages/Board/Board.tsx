@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NumberBoard } from "../../components/NumberBoard/NumberBoard";
 import { Table } from "../../components/Table/Table";
-import { TableData } from "../../components/Table/TableData.interface";
+import {
+  defaultTableData,
+  GameplayStatus,
+  TableData,
+} from "../../components/Table/TableData.interface";
 import { useAppSelector } from "../../store/hooks";
 import { TableContainer } from "../../styles/commonStyles";
 import { BoardWrapper } from "./Board.styles";
@@ -11,7 +15,10 @@ export const Board = () => {
   const { gameplayId } = useParams();
   const { token } = useAppSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
-  const [tableData, setTableData] = useState<TableData[] | null>(null);
+  const [tableData, setTableData] = useState<TableData[]>(defaultTableData);
+  const [gameplayStatus, setGameplayStatus] = useState<GameplayStatus>(
+    GameplayStatus.RUNNING
+  );
 
   useEffect(() => {
     const getGameplay = async () => {
@@ -33,6 +40,7 @@ export const Board = () => {
         if (response.ok) {
           setIsLoading(false);
           setTableData(responseData[0].players);
+          setGameplayStatus(responseData[0].status);
         }
       } catch (error) {
         console.log(
@@ -47,14 +55,18 @@ export const Board = () => {
 
   if (isLoading) return <div>LOADING</div>;
 
-  return tableData ? (
+  return (
     <BoardWrapper>
-      <NumberBoard data={tableData} setData={setTableData} />
+      {gameplayStatus === GameplayStatus.RUNNING && (
+        <NumberBoard
+          data={tableData}
+          setData={setTableData}
+          setGameplayStatus={setGameplayStatus}
+        />
+      )}
       <TableContainer>
-        <Table data={tableData} />
+        <Table data={tableData} gameplayStatus={gameplayStatus} />
       </TableContainer>
     </BoardWrapper>
-  ) : (
-    <div>NULLLLLLLL</div>
   );
 };

@@ -8,10 +8,14 @@ const gameplay = new Schema({
       username: String,
       points: { type: [[Number]], default: null },
       score: { type: Number, default: null },
-      loss: { type: Boolean, default: false },
+      state: {
+        type: String,
+        enum: ["WIN", "IN_GAME", "LOSE"],
+        default: "IN_GAME",
+      },
     },
   ],
-  status: { type: String, default: "RUNNING" },
+  status: { type: String, enum: ["RUNNING", "ENDED"], default: "RUNNING" },
   created: { type: Date, default: Date.now },
 });
 

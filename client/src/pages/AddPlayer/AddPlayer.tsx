@@ -1,5 +1,10 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { NewPlayerCard } from "../../components/NewPlayerCard/NewPlayerCard";
+import { useEffect } from "react";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import {
+  NewPlayerCard,
+  PlayerFormFields,
+} from "../../components/NewPlayerCard/NewPlayerCard";
 import { useAppSelector } from "../../store/hooks";
 import {
   AddNewPlayerButton,
@@ -19,39 +24,37 @@ export type Player = {
 
 export const AddPlayer = () => {
   const { username, token } = useAppSelector((state) => state.auth);
-  const initialPlayerArr: Player[] = [{ id: 1, name: username!, color: "" }];
+  const navigate = useNavigate();
+  const playersArrayName = "players";
 
-  const [gameplayTitle, setGameplaytTitle] = useState<string>("");
-  const [players, setPlayers] = useState<Player[]>(initialPlayerArr);
+  const defaultValues = {
+    title: "",
+    [playersArrayName]: [{ name: "", color: "" }],
+  };
+
+  const methods = useForm({ defaultValues });
+  const { register, handleSubmit, control, setValue, getValues, watch } =
+    methods;
+
+  const { fields, append, remove, update } = useFieldArray({
+    control,
+    name: playersArrayName,
+  });
+
+  useEffect(() => {
+    update(0, { name: username!, color: "" });
+  }, []);
 
   const handleAddNewPlayer = () => {
-    setPlayers &&
-      setPlayers((prev) => [
-        ...prev,
-        { id: prev.length + 1, name: "", color: "" },
-      ]);
+    append({ name: "", color: "" });
   };
 
-  const handleDeletePlayer = (player: Player) => {
-    setPlayers &&
-      setPlayers((prev) => {
-        return prev.filter((item) => item.id !== player.id);
-      });
+  const handleDeletePlayer = (index: number) => {
+    remove(index);
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, player: Player) => {
-    const updatedPlayer = players.map((item) =>
-      item.id === player.id ? { ...player, name: e.target.value } : item
-    );
-    setPlayers(updatedPlayer);
-  };
-
-  const handleTitleOnBlur = (e: ChangeEvent<HTMLInputElement>) => {
-    setGameplaytTitle(e.target.value);
-  };
-
-  const handleCreateGame = async () => {
-    const playersNames = players.map((player) => ({
+  const handleCreateGame = async (data: PlayerFormFields) => {
+    const playersNames = data.players.map((player) => ({
       username: player.name,
     }));
     try {
@@ -62,12 +65,15 @@ export const AddPlayer = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          title: gameplayTitle,
+          title: data.title,
           players: playersNames,
         }),
       });
 
-      const responseData = await response.json();
+      if (response.ok) {
+        const responseData = await response.json();
+        navigate(`/auth/board/${responseData.gameplayId}`, { replace: true });
+      }
     } catch (err) {
       console.log("Error while POST");
     }
@@ -75,32 +81,42 @@ export const AddPlayer = () => {
 
   return (
     <ColumnWrapper>
-      <TitleContainer>
-        <TitleInput
-          type="text"
-          onBlur={handleTitleOnBlur}
-          placeholder={"Title"}
-        />
-      </TitleContainer>
-      <PlayersContainer>
-        <GridContainer $shouldDisplayTwoColumns={players.length > 4}>
-          {players.map((item, index) => (
-            <NewPlayerCard
-              key={`player-card-${index + 1}`}
-              index={index + 1}
-              data={item}
-              onDeleteItem={handleDeletePlayer}
-              onInputChange={handleChange}
-            />
-          ))}
-        </GridContainer>
-      </PlayersContainer>
-      {players.length < 8 && (
-        <AddNewPlayerButton onClick={handleAddNewPlayer}>
-          Add new
-        </AddNewPlayerButton>
-      )}
-      <CreateGameBtn onClick={handleCreateGame}>Create game</CreateGameBtn>
+      <FormProvider {...methods}>
+        <TitleContainer>
+          <TitleInput
+            type="text"
+            placeholder={"Title"}
+            {...register("title")}
+            maxLength={25}
+          />
+        </TitleContainer>
+        <PlayersContainer
+          id="playersForm"
+          onSubmit={handleSubmit(handleCreateGame)}
+        >
+          <GridContainer
+            $shouldDisplayTwoColumns={watch()[playersArrayName].length > 4}
+          >
+            {fields.map((item, index) => (
+              <NewPlayerCard
+                key={`player-card-${item.id}`}
+                index={index}
+                onDeleteItem={handleDeletePlayer}
+                register={register}
+                getValues={getValues}
+              />
+            ))}
+          </GridContainer>
+        </PlayersContainer>
+        {watch()[playersArrayName].length < 8 && (
+          <AddNewPlayerButton onClick={handleAddNewPlayer}>
+            Add new
+          </AddNewPlayerButton>
+        )}
+        <CreateGameBtn type="submit" form="playersForm">
+          Create game
+        </CreateGameBtn>
+      </FormProvider>
     </ColumnWrapper>
   );
 };

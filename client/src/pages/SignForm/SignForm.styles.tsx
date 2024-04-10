@@ -41,6 +41,7 @@ export const Label = styled.label`
 export const InputErrorContainer = styled.div`
   display: flex;
   position: relative;
+  align-items: center;
 `;
 
 export const SignInput = styled(Input)`
@@ -51,13 +52,23 @@ export const ValidationMessage = styled.span`
   position: absolute;
   color: ${error.text};
   margin-left: 10px;
-  padding: 2px;
+  padding: 2px 6px;
   font-size: 12px;
   font-weight: 400;
   left: 400px;
-  width: 200px;
+  width: max-content;
   background: ${error.background};
+  border: solid 1px ${error.text};
   border-radius: 2px;
+
+  &:after {
+    content: " ";
+    position: absolute;
+    left: -11px;
+    top: 4px;
+    border: 5px solid transparent;
+    border-right-color: ${error.text};
+  }
 `;
 
 export const HeaderTabs = styled.div`
