@@ -29,7 +29,12 @@ const signup = async (req, res, next) => {
 
   if (existingUser) {
     const error = new Error("User already exists.");
-    error.statusCode = 422;
+    error.status = 422;
+    res.status(422);
+
+    res.json({
+      error: error.message,
+    });
     return next(error);
   }
 
